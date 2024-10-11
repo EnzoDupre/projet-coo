@@ -1,7 +1,3 @@
 node_modules
-dist
-
-.idea
-.vscode
-*.log*
-.npm
+# Keep environment variables out of version control
+.env
