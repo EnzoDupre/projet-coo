@@ -1,0 +1,5 @@
+{"characters":[
+  {"id":1,"name":"titi Doe","image":"image2.jpg","specie":"Elf","class":"Mage","alignment":"Good","languages":["Elvish"]},
+  {"id":2,"name":"toto Doe","image":"image2.jpg","specie":"Elf","class":"Mage","alignment":"Good","languages":["Elvish"]}
+  ]
+}
