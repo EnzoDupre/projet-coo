@@ -1,25 +1,60 @@
 import { Character } from "../types/character";
-import { ApiService } from "./apiService";
-import { JsonDB, Config } from "node-json-db";
+import { IApiService } from "../interfaces/IApiService";
+import { ICharacterRepository } from "../interfaces/ICharacterRepository";
+import { Config, JsonDB } from "node-json-db";
 
 const db = new JsonDB(new Config("characterDB", true, false, "/"));
 
 export class CharacterService {
-  private apiService: ApiService;
-
-  constructor() {
-    this.apiService = new ApiService();
-  }
+  constructor(
+    private apiService: IApiService,
+    private characterRepository: ICharacterRepository
+  ) {}
 
   async getCharacterCreationInfo() {
-    const species = await this.apiService.getSpecies();
-    const classes = await this.apiService.getClasses();
-    const alignments = await this.apiService.getAlignments();
+    try {
+      const speciesList = await this.apiService.getSpecies();
+      const classesList = await this.apiService.getClasses();
+      const alignmentsList = await this.apiService.getAlignments();
 
-    return { species, classes, alignments };
+      const speciesDetails = await Promise.all(
+        speciesList.results.map(async (specie: any) => {
+          const specieDetails = await this.apiService.getSpecieDetails(
+            specie.index
+          );
+          return { ...specie, ...specieDetails };
+        })
+      );
+
+      const classDetails = await Promise.all(
+        classesList.results.map(async (classItem: any) => {
+          const classData = await this.apiService.getClassDetails(
+            classItem.index
+          );
+          const spells = await this.apiService.getSpellsForClass(
+            classItem.index
+          );
+          return { ...classItem, ...classData, spells: spells.results };
+        })
+      );
+
+      return {
+        species: speciesDetails,
+        classes: classDetails,
+        alignments: alignmentsList.results,
+      };
+    } catch (error) {
+      console.error(
+        "Erreur lors de la récupération des informations de création :",
+        error
+      );
+      throw error;
+    }
   }
 
-  async createCharacter(characterData: Omit<Character, "id">) {
+  async createCharacter(
+    characterData: Omit<Character, "id">
+  ): Promise<Character> {
     try {
       const characters: Character[] = (await db.getData("/characters")) || [];
       const newId =
@@ -35,26 +70,10 @@ export class CharacterService {
   }
 
   async getAllCharacters(): Promise<Character[]> {
-    try {
-      const characters: Character[] = (await db.getData("/characters")) || [];
-      return characters;
-    } catch (error) {
-      console.error("Erreur lors de la récupération des personnages :", error);
-      return [];
-    }
+    return this.characterRepository.getAll();
   }
 
   async getCharacterById(id: number): Promise<Character | undefined> {
-    try {
-      const characters: Character[] = (await db.getData("/")) || [];
-      return characters.find((character) => character.id === id);
-    } catch (error) {
-      console.log(error);
-      console.error(
-        `Erreur lors de la récupération du personnage avec l'ID ${id} :`,
-        error
-      );
-      return undefined;
-    }
+    return this.characterRepository.getById(id);
   }
 }

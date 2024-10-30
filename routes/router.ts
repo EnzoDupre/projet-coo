@@ -1,6 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import { characterRouter, userRoutes } from "./index";
+import { characterRouter } from "./index";
 
 const router = express.Router();
 
@@ -26,7 +26,5 @@ router.get("/", (req, res) => {
 });
 
 router.use("/character", characterRouter);
-
-router.use("/user", verifyToken, userRoutes);
 
 export default router;

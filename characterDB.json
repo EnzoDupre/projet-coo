@@ -1,5 +1,1 @@
-{"characters":[
-  {"id":1,"name":"titi Doe","image":"image2.jpg","specie":"Elf","class":"Mage","alignment":"Good","languages":["Elvish"]},
-  {"id":2,"name":"toto Doe","image":"image2.jpg","specie":"Elf","class":"Mage","alignment":"Good","languages":["Elvish"]}
-  ]
-}
+{"characters":[{"id":1,"name":"titi Doe","image":"image2.jpg","specie":"Elf","class":"Mage","alignment":"Good","languages":["Elvish"]},{"id":2,"name":"toto Doe","image":"image2.jpg","specie":"Elf","class":"Mage","alignment":"Good","languages":["Elvish"]},{"id":3,"name":"Gandalf","image":"http://example.com/image.jpg","specie":"Elf","class":"Mage","alignment":"Good","languages":[{"name":"Common"},{"name":"Elvish"}]},{"id":4,"name":"MyMan","image":"http://example.com/image.jpg","specie":"Elf","class":"Mage","alignment":"Good","languages":[{"name":"Common"},{"name":"Elvish"}]},{"id":5,"name":"MyMan","image":"http://example.com/image.jpg","specie":"Elf","class":"Mage","alignment":"Good","languages":[{"name":"Common"},{"name":"Elvish"}]}]}
